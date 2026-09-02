@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>k·ourse — 여행은 계획대로 되지 않으니까</title>
+<meta name="description" content="현재 위치를 기준으로 갈 만한 곳을 코스로 묶어주는 iOS 앱. 한국관광공사 관광정보를 실시간으로 조회해 오늘 문 연 장소만 골라 동선을 짭니다.">
+<meta property="og:title" content="k·ourse — 여행은 계획대로 되지 않으니까">
+<meta property="og:description" content="현재 위치 기반 여행 코스 자동 생성 iOS 앱">
+<meta property="og:type" content="website">
+<style>
+  :root {
+    --navy: #212e4d;
+    --navy-deep: #1a2440;
+    --red: #d92633;
+    --ink: #1c1f26;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --bg-soft: #f7f8fa;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+                 "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    line-height: 1.75;
+    word-break: keep-all;
+    background: #fff;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- hero ---------- */
+  header {
+    background: var(--navy);
+    color: #fff;
+    padding: 88px 0 76px;
+    text-align: center;
+  }
+  .logo {
+    font-size: 46px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    display: inline-flex;
+    align-items: flex-start;
+    line-height: 1;
+  }
+  .logo .dot {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: var(--red);
+    display: inline-block;
+    margin: 6px 1px 0;
+    flex: none;
+  }
+  .tagline {
+    margin-top: 18px;
+    font-size: 15px;
+    color: rgba(255,255,255,.62);
+    letter-spacing: .02em;
+  }
+  .lede {
+    margin: 34px auto 0;
+    max-width: 540px;
+    font-size: 17px;
+    color: rgba(255,255,255,.88);
+  }
+  .badge {
+    display: inline-block;
+    margin-top: 34px;
+    padding: 9px 18px;
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 100px;
+    font-size: 13px;
+    color: rgba(255,255,255,.78);
+  }
+
+  /* ---------- sections ---------- */
+  section { padding: 62px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: 0; }
+  h2 {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+  h2 + .sub { margin: 0 0 30px; color: var(--muted); font-size: 15px; }
+  h3 { font-size: 16px; font-weight: 650; margin: 0 0 6px; }
+  p { margin: 0 0 14px; }
+
+  .feature { padding: 22px 0; border-top: 1px solid var(--line); }
+  .feature:first-of-type { border-top: 0; padding-top: 0; }
+  .feature p { margin: 0; color: #4b5563; font-size: 15px; }
+  .step {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: .08em;
+    margin-bottom: 4px;
+  }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; }
+  .chip {
+    font-size: 13px;
+    padding: 6px 13px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    color: #374151;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  th, td { text-align: left; padding: 13px 4px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; white-space: nowrap; padding-right: 20px; }
+  td { color: #374151; }
+
+  .note {
+    background: var(--bg-soft);
+    border-left: 3px solid var(--navy);
+    padding: 16px 18px;
+    font-size: 14px;
+    color: #4b5563;
+    margin-top: 26px;
+  }
+  .note strong { color: var(--ink); }
+
+  footer {
+    background: var(--navy-deep);
+    color: rgba(255,255,255,.6);
+    padding: 40px 0;
+    font-size: 13.5px;
+  }
+  footer a { color: rgba(255,255,255,.88); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.3); }
+  footer a:hover { border-bottom-color: rgba(255,255,255,.8); }
+  .foot-row { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-bottom: 18px; }
+  .copyright { color: rgba(255,255,255,.42); font-size: 12.5px; }
+
+  @media (max-width: 560px) {
+    header { padding: 62px 0 54px; }
+    .logo { font-size: 38px; }
+    .logo .dot { width: 9px; height: 9px; margin-top: 5px; }
+    .lede { font-size: 16px; }
+    section { padding: 48px 0; }
+    th, td { display: block; padding: 4px 0; border: 0; }
+    th { padding-top: 14px; }
+    td { padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">k<span class="dot"></span>ourse</div>
+    <div class="tagline">여행은 계획대로 되지 않으니까</div>
+    <p class="lede">
+      어디로 갈지 정하지 못한 채로 나선 사람을 위한 앱입니다.
+      목적지를 검색하는 대신, 지금 서 있는 자리에서 갈 만한 곳을
+      동선까지 묶어 코스로 제안합니다.
+    </p>
+    <div class="badge">iOS · App Store 출시 준비 중</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <h2>이런 문제를 풀었습니다</h2>
+    <p class="sub">여행지에 도착하고 나서야 시작되는 고민들</p>
+
+    <div class="feature">
+      <h3>검색할 이름을 모른다</h3>
+      <p>지도 앱은 갈 곳을 이미 아는 사람을 위한 도구입니다. 낯선 동네에 내렸을 때 필요한 건 검색창이 아니라 "여기서 뭘 할 수 있는지"에 대한 답입니다.</p>
+    </div>
+    <div class="feature">
+      <h3>가보니 문이 닫혀 있다</h3>
+      <p>목록에서 고른 장소가 하필 정기 휴무일이거나, 축제는 지난주에 끝나 있습니다. 이동한 시간은 되돌릴 수 없습니다.</p>
+    </div>
+    <div class="feature">
+      <h3>한 곳씩 찾다 보면 동선이 엉킨다</h3>
+      <p>따로따로 고른 장소들을 이어 붙이면 왔던 길을 되돌아가게 됩니다. 코스는 장소의 목록이 아니라 순서의 문제입니다.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>어떻게 동작하나요</h2>
+    <p class="sub">버튼 하나로 네 단계가 한 번에 돌아갑니다</p>
+
+    <div class="feature">
+      <span class="step">STEP 1</span>
+      <h3>지금 위치에서 찾습니다</h3>
+      <p>현재 좌표를 기준으로 도심은 반경 2km, 그 외 지역은 5km 안의 관광지를 조회합니다. 고른 테마를 관광정보 분류체계로 변환해 분류별로 나누어 검색하기 때문에, 밀도가 높은 음식점이 결과를 독식하지 않습니다.</p>
+      <div class="chips">
+        <span class="chip">맛집·카페</span>
+        <span class="chip">전시·체험</span>
+        <span class="chip">역사·문화</span>
+        <span class="chip">쇼핑·시장</span>
+        <span class="chip">자연·산책</span>
+        <span class="chip">액티비티·레저</span>
+      </div>
+    </div>
+
+    <div class="feature">
+      <span class="step">STEP 2</span>
+      <h3>오늘 닫은 곳을 걸러냅니다</h3>
+      <p>후보로 오른 장소마다 소개정보를 개별 조회해 정기 휴무일과 운영시간을 확인하고, 오늘 문을 닫는 곳을 코스에서 제외합니다. 축제·공연은 종료일을 확인해 이미 끝난 행사를 거릅니다. 콘텐츠 종류마다 휴무일이 담기는 필드가 달라, 종류별로 따로 읽습니다.</p>
+    </div>
+
+    <div class="feature">
+      <span class="step">STEP 3</span>
+      <h3>순서를 정하고 시간을 배분합니다</h3>
+      <p>선택한 소요시간(2시간·반나절·하루)에 맞춰 방문할 곳의 수를 정하고, 실제 이동 경로를 계산해 되돌아가지 않는 순서로 배열합니다. 장소마다 예상 체류 시간을 붙여 전체 일정이 시간 안에 들어오는지 맞춥니다. 비가 오는 날에는 실내 장소를 우선합니다.</p>
+    </div>
+
+    <div class="feature">
+      <span class="step">STEP 4</span>
+      <h3>따라가면서 바꿀 수 있습니다</h3>
+      <p>지도 위 번호 마커와 경로를 따라 이동하고, 장소에 도착하면 다음 목적지로 자동 전환됩니다. 마음에 들지 않는 장소는 카드를 옆으로 밀어 같은 테마의 다른 곳으로 교체하고, 번호를 길게 눌러 순서를 바꿉니다. 이동 중에 계획이 틀어져도 대체 코스를 다시 받을 수 있습니다.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>화면</h2>
+    <p class="sub">네 개의 화면으로 이루어져 있습니다</p>
+    <table>
+      <tr>
+        <th>홈</th>
+        <td>테마와 소요시간을 고르고 코스 생성을 시작합니다. 현재 위치의 날씨를 함께 보여줘 실내·실외 선택에 참고하도록 했습니다.</td>
+      </tr>
+      <tr>
+        <th>코스 결과</th>
+        <td>지도에 방문 순서대로 번호 마커와 이동 경로를 그리고, 아래에 장소 카드를 나열합니다. 카드에는 대표 사진, 장소명, 분류, 거리, 체류 시간이 표시됩니다.</td>
+      </tr>
+      <tr>
+        <th>장소 상세</th>
+        <td>장소 소개, 사진 갤러리, 운영시간, 휴무일, 주차 정보, 이용요금, 문의처를 한 화면에 모아 보여줍니다.</td>
+      </tr>
+      <tr>
+        <th>코스 내비게이션</th>
+        <td>현재 위치에서 다음 장소까지 길을 안내하고, 남은 장소 수를 표시합니다. 모두 돌면 완주 화면이 뜹니다.</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>활용 데이터</h2>
+    <p class="sub">코스에 등장하는 모든 장소 정보는 공공데이터에서 실시간으로 가져옵니다</p>
+    <table>
+      <tr>
+        <th>관광정보</th>
+        <td>
+          국문 관광정보 서비스 (KorService2)<br>
+          위치기반 관광정보 · 소개정보 · 공통정보 · 이미지정보 조회<br>
+          <span style="color:var(--muted)">출처: ⓒ한국관광공사</span>
+        </td>
+      </tr>
+      <tr>
+        <th>날씨</th>
+        <td>단기예보 조회서비스<br><span style="color:var(--muted)">출처: ⓒ기상청</span></td>
+      </tr>
+      <tr>
+        <th>경로 · 지도</th>
+        <td>네이버 클라우드 플랫폼 Directions, 카카오 로컬 API, Apple MapKit</td>
+      </tr>
+      <tr>
+        <th>코스 분석</th>
+        <td>Apple Foundation Models (기기 내에서 처리되며 외부로 전송되지 않습니다)</td>
+      </tr>
+    </table>
+
+    <div class="note">
+      <strong>k·ourse는 한국관광공사가 운영하는 서비스가 아닙니다.</strong>
+      공공데이터포털을 통해 개방된 관광정보를 활용해 개인이 개발한 앱이며,
+      장소 정보의 최신성과 정확성은 원 데이터에 따릅니다.
+      방문 전 해당 장소에 운영 여부를 확인하시기 바랍니다.
+    </div>
+  </section>
+
+  <section>
+    <h2>이용 안내</h2>
+    <p class="sub">계정과 위치 정보에 대하여</p>
+    <table>
+      <tr>
+        <th>로그인</th>
+        <td>카카오 또는 Apple 계정으로 로그인합니다. 별도의 회원가입 절차는 없습니다.</td>
+      </tr>
+      <tr>
+        <th>위치 권한</th>
+        <td>코스를 만들려면 현재 위치가 필요합니다. 권한은 언제든 iOS 설정에서 철회할 수 있습니다.</td>
+      </tr>
+      <tr>
+        <th>계정 삭제</th>
+        <td>앱 안의 프로필 화면에서 직접 계정을 삭제할 수 있으며, 저장된 코스를 포함한 모든 데이터가 함께 삭제됩니다.</td>
+      </tr>
+      <tr>
+        <th>광고 · 추적</th>
+        <td>광고 식별자를 수집하지 않으며, 이용자를 추적하지 않습니다.</td>
+      </tr>
+    </table>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <a href="privacy.html">개인정보 처리방침</a>
+      <span>문의 · mmxsound077@gmail.com</span>
+    </div>
+    <div class="copyright">
+      관광정보 출처: ⓒ한국관광공사 · 날씨정보 출처: ⓒ기상청<br>
+      © 2026 k·ourse. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
